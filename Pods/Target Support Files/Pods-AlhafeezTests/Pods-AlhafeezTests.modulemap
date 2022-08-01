@@ -1,0 +1,6 @@
+framework module Pods_AlhafeezTests {
+  umbrella header "Pods-AlhafeezTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

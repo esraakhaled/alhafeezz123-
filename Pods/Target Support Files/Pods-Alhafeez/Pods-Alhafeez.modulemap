@@ -1,0 +1,6 @@
+framework module Pods_Alhafeez {
+  umbrella header "Pods-Alhafeez-umbrella.h"
+
+  export *
+  module * { export * }
+}
