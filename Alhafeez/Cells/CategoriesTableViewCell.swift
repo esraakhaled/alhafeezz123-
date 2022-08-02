@@ -10,11 +10,16 @@ import UIKit
 class CategoriesTableViewCell: UITableViewCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
-    
     @IBOutlet weak var categoryName: UILabel!
+    
+     let categories = ["building1","building2","building3"]
+     let categoriesLbl = ["sale","rent","rentDaily"]
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -29,16 +34,17 @@ class CategoriesTableViewCell: UITableViewCell {
 }
 extension  CategoriesTableViewCell:UICollectionViewDelegate,UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollectionViewCell", for: indexPath) as? CategoryCollectionViewCell
-        else{
-            return UICollectionViewCell()
-        }
-        return cell
+       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollectionViewCell", for: indexPath) as! CategoryCollectionViewCell
+                cell.categoryImage.image = UIImage(named: categories[indexPath.row])
+                cell.categoryLbl.text = categoriesLbl[indexPath.row]
+               return cell
+    }
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return categories.count
     }
     
    
