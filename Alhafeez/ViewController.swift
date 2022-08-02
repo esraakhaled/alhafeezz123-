@@ -8,50 +8,76 @@
 import UIKit
 import DropDown
 
-class ViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
+class ViewController:  UIViewController
+{
+
+
+    @IBOutlet weak var categoriesCollectionViewCell: UICollectionView!
+    
+    
+    
+    
+    // MARK: - IBOutlets
+    //
+    @IBOutlet weak private var homeTableView: UITableView!
     
     @IBOutlet weak var selectBtn: UIButton!
     @IBOutlet weak var menuBtn: UIBarButtonItem!
-    @IBOutlet weak var viewAllBtn: UIButton!
-    @IBOutlet weak var viewRestBtn: UIButton!
-    
-    @IBOutlet weak var collectionViewItems: UICollectionView!
-    @IBOutlet weak var CollectionViewSales: UICollectionView!
-    @IBOutlet weak var collectionViewHiring: UICollectionView!
+   
+   let categories = ["house1","house2","house3"]
+    let categoriesLbl = ["sale","rent","rentDaily"]
     private let dropDown = DropDown()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        categoriesCollectionViewCell.delegate = self
+        categoriesCollectionViewCell.dataSource = self
+        homeTableView.dataSource = self
+        homeTableView.delegate = self
+       
         
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(collectionView == collectionViewItems){
-            return 3;
-        }
-        else {
-            return 6;
-        }
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionViewItems.dequeueReusableCell(withReuseIdentifier: "sectionCell", for: indexPath) as! ItemsCell
-        cell.backgroundColor = UIColor.white
-        if(collectionView == CollectionViewSales){
-            let cell2 = CollectionViewSales.dequeueReusableCell(withReuseIdentifier: "SalesCell", for: indexPath) as! salecell
-            return cell2
-        }
-        else if(collectionView == collectionViewHiring){
-            let cell3 = collectionViewHiring.dequeueReusableCell(withReuseIdentifier: "hiringCell", for: indexPath) as! hiringCell
-            return cell3
-        }
-        return cell
-    }
     private func setUpUI() {
-       
         dropDown.anchorView = selectBtn
        // dropDown.dataSource = EgyptCitiesArray.EgyptCities
     }
     
 
 }
-
+extension ViewController :UICollectionViewDelegate,UICollectionViewDataSource{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+       return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return categories.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = categoriesCollectionViewCell.dequeueReusableCell(withReuseIdentifier: "CategoriesCell", for: indexPath) as! CategoriesCollectionCell
+        cell.categoriesImage.image = UIImage(named: categories[indexPath.row])
+        cell.categoriesLabel.text = categoriesLbl[indexPath.row]
+        return cell
+    }
+    
+    
+}
+extension ViewController : UITableViewDataSource,UITableViewDelegate{
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoriesTableViewCell") as? CategoriesTableViewCell
+        else{
+           return UITableViewCell()
+        }
+        return cell
+    }
+    
+    
+}
